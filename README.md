@@ -1,4 +1,4 @@
-# Solution to the CrowdAI music genre classification challenge 2018
+# 4th Place Public LB Solution to the CrowdAI music genre classification challenge 2018
 
 # Authors
 
