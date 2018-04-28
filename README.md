@@ -2,9 +2,9 @@
 
 # Authors
 
-Daniyar Chumbalov (@check), EPFL, INDY lab.
+Daniyar Chumbalov, Ecole Polytechnique Federale de Lausanne (EPFL), INDY lab.
 
-Philipp Pushnyakov (@gg12), Moscow Institute of Physics and Technologies (MIPT). 
+Philipp Pushnyakov, Moscow Institute of Physics and Technologies (MIPT). 
 
 # Our solution
 
