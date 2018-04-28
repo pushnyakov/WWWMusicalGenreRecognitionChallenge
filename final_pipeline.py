@@ -131,120 +131,120 @@ def other3(file_path):
     res = np.array(res)
     return res, file_path
 
-# def train_model():
-#     print('-'*130)
-#     print ('Features extracting: train')
-#     print('-'*130)
+def train_model():
+    print('-'*130)
+    print ('Features extracting: train')
+    print('-'*130)
 
-#     flty = fma.FILES_TRAIN_FAULTY
-#     names = os.listdir('data/fma_medium/')
-#     names.remove('README.txt')
-#     names.remove('checksums')
+    flty = fma.FILES_TRAIN_FAULTY
+    names = os.listdir('data/fma_medium/')
+    names.remove('README.txt')
+    names.remove('checksums')
 
-#     files = []
-#     for name in names:
-#         i_names = os.listdir('data/fma_medium/{}/'.format(name))
-#         for n in i_names:
-#             if int(n[:6]) in flty:
-#                 continue
-#             files.append('data/fma_medium/{}/{}'.format(name, n))
+    files = []
+    for name in names:
+        i_names = os.listdir('data/fma_medium/{}/'.format(name))
+        for n in i_names:
+            if int(n[:6]) in flty:
+                continue
+            files.append('data/fma_medium/{}/{}'.format(name, n))
 
-#     x_train = []
-#     y_train = []
-#     names = []
+    x_train = []
+    y_train = []
+    names = []
 
-#     # files = files[:100]
+    # files = files[:100]
 
-#     pool = multiprocessing.Pool(nb_workers)
+    pool = multiprocessing.Pool(nb_workers)
 
-#     if feat_type == 'mfcc3':
-#         it = pool.imap_unordered(mfcc3, files)
-#     elif feat_type == 'stft3':
-#         it = pool.imap_unordered(stft3, files)
-#     elif feat_type == 'qstft3':
-#         it = pool.imap_unordered(stft3_quick, files)
-#     elif feat_type == 'other3':
-#         it = pool.imap_unordered(other3, files)
-#     for data, file_path in tqdm(it, total=len(files)):
-#         for i in range(19):
-#             x_train.append(data[i].T)
-#             names.append(file_path[20:26])
+    if feat_type == 'mfcc3':
+        it = pool.imap_unordered(mfcc3, files)
+    elif feat_type == 'stft3':
+        it = pool.imap_unordered(stft3, files)
+    elif feat_type == 'qstft3':
+        it = pool.imap_unordered(stft3_quick, files)
+    elif feat_type == 'other3':
+        it = pool.imap_unordered(other3, files)
+    for data, file_path in tqdm(it, total=len(files)):
+        for i in range(19):
+            x_train.append(data[i].T)
+            names.append(file_path[20:26])
 
-#     pool.close()
+    pool.close()
 
-#     labels = pd.read_csv('data/train_labels.csv', index_col=0, squeeze=True)
-#     labels = labels.drop(fma.FILES_TRAIN_FAULTY)
+    labels = pd.read_csv('data/train_labels.csv', index_col=0, squeeze=True)
+    labels = labels.drop(fma.FILES_TRAIN_FAULTY)
 
-#     class_map = {}
-#     cnt = 0
-#     for cl in CLASSES:
-#         class_map[cl] = cnt
-#         cnt += 1
+    class_map = {}
+    cnt = 0
+    for cl in CLASSES:
+        class_map[cl] = cnt
+        cnt += 1
 
-#     for name in names:
-#         y_train.append(class_map[labels[int(name)]])
+    for name in names:
+        y_train.append(class_map[labels[int(name)]])
 
-#     x_train = np.asarray(x_train)
-#     y_train = np.asarray(y_train)
+    x_train = np.asarray(x_train)
+    y_train = np.asarray(y_train)
 
-#     print('-'*130)
-#     print ('Model train')
-#     print('-'*130)
+    print('-'*130)
+    print ('Model train')
+    print('-'*130)
 
-#     input_shape = (rows, cols, 1)
+    input_shape = (rows, cols, 1)
 
-#     inputs = Input(shape=input_shape)
+    inputs = Input(shape=input_shape)
 
-#     x = BatchNormalization()(inputs)
-#     x = Conv2D(256, kernel_size=(4, cols), activation='relu', input_shape=input_shape)(x)
-#     shortcut = x
-#     x = Conv2D(256, kernel_size=(4, 1), activation='relu', padding='same')(x)
-#     x = Conv2D(256, kernel_size=(4, 1), activation='relu', padding='same')(x)
+    x = BatchNormalization()(inputs)
+    x = Conv2D(256, kernel_size=(4, cols), activation='relu', input_shape=input_shape)(x)
+    shortcut = x
+    x = Conv2D(256, kernel_size=(4, 1), activation='relu', padding='same')(x)
+    x = Conv2D(256, kernel_size=(4, 1), activation='relu', padding='same')(x)
 
-#     x = Conv2D(256, kernel_size=(4, 1), activation='relu', padding='same')(x)
-#     x = Conv2D(256, kernel_size=(4, 1), activation='relu', padding='same')(x)
+    x = Conv2D(256, kernel_size=(4, 1), activation='relu', padding='same')(x)
+    x = Conv2D(256, kernel_size=(4, 1), activation='relu', padding='same')(x)
 
-#     x1 = AveragePooling2D(pool_size=(125, 1))(keras.layers.concatenate([x, shortcut]))
-#     x2 = MaxPooling2D(pool_size=(125, 1))(keras.layers.concatenate([x, shortcut]))
+    x1 = AveragePooling2D(pool_size=(125, 1))(keras.layers.concatenate([x, shortcut]))
+    x2 = MaxPooling2D(pool_size=(125, 1))(keras.layers.concatenate([x, shortcut]))
 
-#     # z = MaxPooling2D(pool_size=(2, 1))(inputs)
-#     # z = Lambda(lambda y: K.squeeze(y, 3))(z)
-#     # # z = Embedding(input_dim=200000, output_dim=128, input_length=100)(z)
-#     # z = Bidirectional(LSTM(256, return_sequences=False))(z)
-#     # z = Lambda(lambda y: K.reshape(y, (-1,1,1,512)))(z)
+    # z = MaxPooling2D(pool_size=(2, 1))(inputs)
+    # z = Lambda(lambda y: K.squeeze(y, 3))(z)
+    # # z = Embedding(input_dim=200000, output_dim=128, input_length=100)(z)
+    # z = Bidirectional(LSTM(256, return_sequences=False))(z)
+    # z = Lambda(lambda y: K.reshape(y, (-1,1,1,512)))(z)
 
-#     x = Dropout(0.2)(keras.layers.concatenate([x1, x2]))
-#     x = Flatten()(x)
-#     x = Dense(480, activation='relu')(x)
-#     x = Dropout(0.2)(x)
-#     x = Dense(240, activation='relu')(x)
-#     x = Dropout(0.2)(x)
+    x = Dropout(0.2)(keras.layers.concatenate([x1, x2]))
+    x = Flatten()(x)
+    x = Dense(480, activation='relu')(x)
+    x = Dropout(0.2)(x)
+    x = Dense(240, activation='relu')(x)
+    x = Dropout(0.2)(x)
 
-#     pred = Dense(num_classes, activation='softmax')(x)
-#     model = Model(inputs=inputs, outputs=pred)
+    pred = Dense(num_classes, activation='softmax')(x)
+    model = Model(inputs=inputs, outputs=pred)
 
-#     x_train = x_train.reshape(x_train.shape[0], rows, cols, 1)
-#     y_train = to_categorical(y_train, num_classes)
+    x_train = x_train.reshape(x_train.shape[0], rows, cols, 1)
+    y_train = to_categorical(y_train, num_classes)
 
-#     model.compile(loss=keras.losses.categorical_crossentropy,
-#                   optimizer=keras.optimizers.Adadelta(),
-#                   metrics=['acc'])
+    model.compile(loss=keras.losses.categorical_crossentropy,
+                  optimizer=keras.optimizers.Adadelta(),
+                  metrics=['acc'])
 
-#     checkpoint = ModelCheckpoint('best_'+model_name+'.h5', monitor='acc', verbose=1, save_best_only=True, mode='max')
-#     early_stop = EarlyStopping(monitor='acc', patience=5, mode='max') 
-#     callbacks_list = [checkpoint, early_stop]
+    checkpoint = ModelCheckpoint('best_'+model_name+'.h5', monitor='acc', verbose=1, save_best_only=True, mode='max')
+    early_stop = EarlyStopping(monitor='acc', patience=5, mode='max') 
+    callbacks_list = [checkpoint, early_stop]
 
-#     model.fit(x_train, y_train,
-#               batch_size=batch_size,
-#               epochs=epochs,
-#               verbose=1,
-#               shuffle=True,
-#               callbacks=callbacks_list)
+    model.fit(x_train, y_train,
+              batch_size=batch_size,
+              epochs=epochs,
+              verbose=1,
+              shuffle=True,
+              callbacks=callbacks_list)
 
 
-#     # model.save(model_name+'.h5')
+    # model.save(model_name+'.h5')
 
-#     del x_train
+    del x_train
 
 def predict_model():
     bs = 5000
