@@ -1,5 +1,7 @@
 # 4th Place Public LB Solution to the CrowdAI music genre classification challenge 2018
 
+https://www.crowdai.org/challenges/www-2018-challenge-learning-to-recognize-musical-genre
+
 # Authors
 
 Daniyar Chumbalov, Ecole Polytechnique Federale de Lausanne (EPFL), INDY lab.
