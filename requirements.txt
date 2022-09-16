@@ -39,7 +39,7 @@ Keras==2.1.4
 leveldb==0.194
 librosa==0.6.0
 llvmlite==0.22.0
-Mako==1.0.7
+Mako==1.2.2
 Markdown==2.6.11
 MarkupSafe==1.0
 matplotlib==2.1.2
